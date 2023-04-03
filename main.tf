@@ -35,7 +35,7 @@ resource "yandex_vpc_security_group_rule" "ingress_rules_with_sg_ids" {
   security_group_id      = lookup(var.ingress_rules_with_sg_ids[count.index], "security_group_id", null)
 }
 resource "yandex_vpc_security_group_rule" "ingress_self_rule" {
-  count                  = var.self == true ? 1 : 0
+  count                  = var.self ? 1 : 0
   security_group_binding = yandex_vpc_security_group.this.id
   direction              = "ingress"
   description            = "Communication inside this SG"
@@ -46,7 +46,7 @@ resource "yandex_vpc_security_group_rule" "ingress_self_rule" {
   predefined_target      = "self_security_group"
 }
 resource "yandex_vpc_security_group_rule" "ingress_nlb_hc_rule" {
-  count                  = var.nlb_hc == true ? 1 : 0
+  count                  = var.nlb_hc ? 1 : 0
   security_group_binding = yandex_vpc_security_group.this.id
   direction              = "ingress"
   description            = "NLB health check"

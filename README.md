@@ -2,7 +2,6 @@
 ## Features
 
 * Create Security Group and rules in your VPC.
-* Applicable for FOR_Each cycle. See [example](./example/main.tf)
 * Output SG-id for referencing
 
 Use `ingress_rules_with_cidrs` to add rules with ip address ranges.
