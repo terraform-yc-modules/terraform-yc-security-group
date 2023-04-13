@@ -43,13 +43,13 @@ There are no modules available.
 
 | Name | Type |
 |------|------|
-| [yandex_vpc_security_group.this](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group) | resource |
-| [yandex_vpc_security_group_rule.egress_rules](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | resource |
-| [yandex_vpc_security_group_rule.ingress_nlb_hc_rule](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | resource |
-| [yandex_vpc_security_group_rule.ingress_rules_with_cidrs](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | resource |
-| [yandex_vpc_security_group_rule.ingress_rules_with_sg_ids](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | resource |
-| [yandex_vpc_security_group_rule.ingress_self_rule](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | resource |
-| [yandex_client_config.client](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/data-sources/client_config) | data source |
+| [yandex_vpc_security_group.this](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group) | Resource |
+| [yandex_vpc_security_group_rule.egress_rules](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | Resource |
+| [yandex_vpc_security_group_rule.ingress_nlb_hc_rule](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | Resource |
+| [yandex_vpc_security_group_rule.ingress_rules_with_cidrs](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | Resource |
+| [yandex_vpc_security_group_rule.ingress_rules_with_sg_ids](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | Resource |
+| [yandex_vpc_security_group_rule.ingress_self_rule](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_security_group_rule) | Resource |
+| [yandex_client_config.client](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/data-sources/client_config) | Data source |
 
 ## Inputs
 
@@ -62,12 +62,12 @@ There are no modules available.
 | <a name="input_labels"></a> [labels](#input\_labels) | Set of key/value label pairs to assign | `map(string)` | `null` | No |
 | <a name="input_name"></a> [name](#input\_name) | Security group name | `string` | N/A | Yes |
 | <a name="input_network_id"></a> [network\_id](#input\_network\_id) | Existing network where resources will be created | `string` | `null` | No |
-| <a name="input_nlb_hc"></a> [nlb\_hc](#input\_nlb\_hc) | Allow to communicate with NLB health check servers | `bool` | `false` | No |
-| <a name="input_self"></a> [self](#input\_self) | Allow to communicate inside security group | `bool` | `true` | No |
-| <a name="input_self_from_port"></a> [self\_from\_port](#input\_self\_from\_port) | Allow to communicate within security group with port from | `number` | `null` | No |
-| <a name="input_self_port"></a> [self\_port](#input\_self\_port) | Allow to communicaten within security group with port | `number` | `null` | No |
-| <a name="input_self_protocol"></a> [self\_protocol](#input\_self\_protocol) | Allow to communicate within security group with protocol | `string` | `"ANY"` | No |
-| <a name="input_self_to_port"></a> [self\_to\_port](#input\_self\_to\_port) | Allow to communicate within security group with port to | `number` | `null` | No |
+| <a name="input_nlb_hc"></a> [nlb\_hc](#input\_nlb\_hc) | Allow communication with NLB health check servers | `bool` | `false` | No |
+| <a name="input_self"></a> [self](#input\_self) | Allow communication inside security group | `bool` | `true` | No |
+| <a name="input_self_from_port"></a> [self\_from\_port](#input\_self\_from\_port) | Allow communication within security group with port from | `number` | `null` | No |
+| <a name="input_self_port"></a> [self\_port](#input\_self\_port) | Allow communication within security group with port | `number` | `null` | No |
+| <a name="input_self_protocol"></a> [self\_protocol](#input\_self\_protocol) | Allow communication within security group with protocol | `string` | `"ANY"` | No |
+| <a name="input_self_to_port"></a> [self\_to\_port](#input\_self\_to\_port) | Allow communication within security group with port to | `number` | `null` | No |
 
 ## Outputs
 
