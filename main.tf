@@ -11,6 +11,7 @@ resource "yandex_vpc_security_group" "this" {
   name        = var.name
   network_id  = var.network_id
   labels      = var.labels
+  folder_id   = local.folder_id
 }
 resource "yandex_vpc_security_group_rule" "ingress_rules_with_cidrs" {
   count                  = length(var.ingress_rules_with_cidrs)
