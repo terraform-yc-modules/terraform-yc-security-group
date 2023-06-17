@@ -22,6 +22,24 @@ export YC_TOKEN=$(yc iam create-token)
 export YC_CLOUD_ID=$(yc config get cloud-id)
 export YC_FOLDER_ID=$(yc config get folder-id)
 ``` 
+
+### Type
+
+The *type* should always be lowercase as shown below.
+
+#### Allowed `<type>` values:
+
+* **breaking: msg** (a commit that has the text BREAKING CHANGE: at the beginning of its optional body or footer section introduces a breaking API change)
+* **chore: msg** (updating build/env/packages, etc; no production code change)
+* **ci: msg** (changes to our CI configuration files and scripts )
+* **docs: msg** (changes to documentation)
+* **feat: msg** (new feature for the user)
+* **fix: msg** (bug fix for the user, not a fix to build scripts)
+* **refactor: msg** (refactoring production code, eg. renaming a variable)
+* **security: msg** (fix security vulnerabilities)
+* **style: msg** (formatting, missing semi colons, etc; no functional code change)
+* **test: msg** (adding missing tests, refactoring tests; no production code change)
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
