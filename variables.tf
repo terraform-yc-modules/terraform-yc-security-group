@@ -4,6 +4,12 @@ variable "network_id" {
   description = "Existing network where resources will be created"
 }
 
+variable "description" {
+  type        = string
+  default     = "Managed by Terraform"
+  description = "Description of the security group"
+}
+
 variable "name" {
   type        = string
   description = "Security group name"
@@ -22,43 +28,82 @@ variable "labels" {
 }
 
 variable "ingress_rules_with_cidrs" {
-  type        = any
-  description = <<EOT
-  Security group rules with CIDRs as a source.
+  type = list(object({
+    description    = optional(string, "")
+    protocol       = optional(string, "ANY")
+    port           = optional(number)
+    from_port      = optional(number)
+    to_port        = optional(number)
+    v4_cidr_blocks = optional(list(string), [])
+  }))
+  default     = []
+  description = <<-EOT
+  List of ingress rules with CIDR blocks as sources.
+  
+  Each rule can include:
+  - description: (Optional) Description of the rule
+  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, ANY. Default: ANY
+  - port: (Optional) Single port number
+  - from_port: (Optional) Start of port range. Used with to_port
+  - to_port: (Optional) End of port range. Used with from_port
+  - v4_cidr_blocks: (Optional) List of IPv4 CIDR blocks
+  
+  Note: Either use 'port' OR 'from_port'/'to_port' pair, not both.
+  
   Example:
-  ``` 
+  ```
   ingress_rules_with_cidrs = [
-  {
-    description    = "ssh"
-    port           = 22
-    protocol       = "ANY"
-    v4_cidr_blocks = ["0.0.0.0/0"]
-  },
-  {
-    description    = "ICMP"
-    v4_cidr_blocks = ["0.0.0.0/0"]
-    from_port      = 0
-    to_port        = 65535
-  },
+    {
+      description    = "ssh"
+      port           = 22
+      protocol       = "TCP"
+      v4_cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      description    = "ICMP"
+      protocol       = "ICMP"
+      v4_cidr_blocks = ["0.0.0.0/0"]
+      from_port      = 0
+      to_port        = 65535
+    },
   ]
-  ``` 
+  ```
   EOT
 }
 
 variable "ingress_rules_with_sg_ids" {
-  type        = any
-  description = <<EOT
-  Security group rules with other SG-id as a source.
+  type = list(object({
+    description       = optional(string, "")
+    protocol          = optional(string, "ANY")
+    port              = optional(number)
+    from_port         = optional(number)
+    to_port           = optional(number)
+    security_group_id = string
+  }))
+  default     = []
+  description = <<-EOT
+  List of ingress rules with other security groups as sources.
+  
+  Each rule can include:
+  - description: (Optional) Description of the rule
+  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, ANY. Default: ANY
+  - port: (Optional) Single port number
+  - from_port: (Optional) Start of port range. Used with to_port
+  - to_port: (Optional) End of port range. Used with from_port
+  - security_group_id: (Required) ID of the source security group
+  
+  Note: Either use 'port' OR 'from_port'/'to_port' pair, not both.
+  
   Example:
-  ``` 
+  ```
   ingress_rules_with_sg_ids = [
-  {
-    protocol          = "ANY"
-    description       = "Communication with web SG"
-    security_group_id = "xxx222xxx"
-  },
+    {
+      protocol          = "ANY"
+      description       = "Communication with web SG"
+      security_group_id = "12345678"
+    },
   ]
-  ``` 
+  ```
   EOT
 }
 
@@ -76,7 +121,7 @@ variable "nlb_hc" {
 
 variable "self_port" {
   type        = number
-  description = "Allow to communicaten within security group with port"
+  description = "Allow to communicate within security group with port"
   default     = null
 }
 
@@ -99,18 +144,37 @@ variable "self_protocol" {
 }
 
 variable "egress_rules" {
-  type        = any
-  description = <<EOT
-  Security group egress rules with CIDRs.
+  type = list(object({
+    description    = optional(string, "")
+    protocol       = optional(string, "ANY")
+    port           = optional(number)
+    from_port      = optional(number, 0)
+    to_port        = optional(number, 65535)
+    v4_cidr_blocks = optional(list(string), ["0.0.0.0/0"])
+  }))
+  default     = []
+  description = <<-EOT
+  List of egress rules with CIDR blocks as destinations.
+  
+  Each rule can include:
+  - description: (Optional) Description of the rule
+  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, ANY. Default: ANY
+  - port: (Optional) Single port number
+  - from_port: (Optional) Start of port range. Default: 0
+  - to_port: (Optional) End of port range. Default: 65535
+  - v4_cidr_blocks: (Optional) List of IPv4 CIDR blocks. Default: ["0.0.0.0/0"]
+  
+  Note: Either use 'port' OR 'from_port'/'to_port' pair, not both.
+  
   Example:
-  ``` 
+  ```
   egress_rules = [
-  {
-    protocol       = "ANY"
-    description    = "To the internet"
-    v4_cidr_blocks = ["0.0.0.0/0"]
-  },
+    {
+      protocol       = "ANY"
+      description    = "To the internet"
+      v4_cidr_blocks = ["0.0.0.0/0"]
+    },
   ]
-  ``` 
+  ```
   EOT
 }

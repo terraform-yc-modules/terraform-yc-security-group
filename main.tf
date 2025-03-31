@@ -7,7 +7,7 @@ locals {
 }
 
 resource "yandex_vpc_security_group" "this" {
-  description = "security group"
+  description = var.description
   name        = var.name
   network_id  = var.network_id
   labels      = var.labels
