@@ -63,13 +63,13 @@ export YC_FOLDER_ID=$(yc config get folder-id)
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_yandex"></a> [yandex](#requirement\_yandex) | >= 0.100 |
+| <a name="requirement_yandex"></a> [yandex](#requirement\_yandex) | >= 0.220.0, < 0.221.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_yandex"></a> [yandex](#provider\_yandex) | 0.139.0 |
+| <a name="provider_yandex"></a> [yandex](#provider\_yandex) | 0.220.0 |
 
 ## Modules
 
