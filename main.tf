@@ -1,17 +1,12 @@
 ### Datasource
 data "yandex_client_config" "client" {}
 
-### Locals
-locals {
-  folder_id = var.folder_id == null ? data.yandex_client_config.client.folder_id : var.folder_id
-}
-
 resource "yandex_vpc_security_group" "this" {
   description = var.description
   name        = var.name
   network_id  = var.network_id
   labels      = var.labels
-  folder_id   = local.folder_id
+  folder_id   = var.folder_id == null ? data.yandex_client_config.client.folder_id : var.folder_id
 }
 resource "yandex_vpc_security_group_rule" "ingress_rules_with_cidrs" {
   count                  = length(var.ingress_rules_with_cidrs)
