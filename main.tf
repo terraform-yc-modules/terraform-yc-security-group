@@ -63,7 +63,7 @@ resource "yandex_vpc_security_group_rule" "egress_rules" {
   description            = lookup(var.egress_rules[count.index], "description", "")
   v4_cidr_blocks         = lookup(var.egress_rules[count.index], "v4_cidr_blocks", ["0.0.0.0/0"])
   port                   = lookup(var.egress_rules[count.index], "port", null)
-  from_port              = lookup(var.egress_rules[count.index], "from_port", 0)
-  to_port                = lookup(var.egress_rules[count.index], "to_port", 65535)
+  from_port              = lookup(var.egress_rules[count.index], "port", null) == null ? lookup(var.egress_rules[count.index], "from_port", 0) : null
+  to_port                = lookup(var.egress_rules[count.index], "port", null) == null ? lookup(var.egress_rules[count.index], "to_port", 65535) : null
   protocol               = lookup(var.egress_rules[count.index], "protocol", "ANY")
 }

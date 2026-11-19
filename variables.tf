@@ -36,13 +36,23 @@ variable "ingress_rules_with_cidrs" {
     to_port        = optional(number)
     v4_cidr_blocks = optional(list(string), [])
   }))
-  default     = []
+  default = []
+  validation {
+    condition = alltrue([
+      for rule in var.ingress_rules_with_cidrs : (
+        rule.port == null
+        ? ((rule.from_port == null && rule.to_port == null) || (rule.from_port != null && rule.to_port != null && try(rule.from_port <= rule.to_port, false)))
+        : rule.from_port == null && rule.to_port == null
+      ) && contains(["ANY", "TCP", "UDP", "ICMP", "IPV6_ICMP", "AH", "ESP", "GRE"], rule.protocol)
+    ])
+    error_message = "Each ingress CIDR rule must use either port or a complete, ordered from_port/to_port range, and its protocol must be ANY, TCP, UDP, ICMP, IPV6_ICMP, AH, ESP, or GRE."
+  }
   description = <<-EOT
   List of ingress rules with CIDR blocks as sources.
   
   Each rule can include:
   - description: (Optional) Description of the rule
-  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, ANY. Default: ANY
+  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, IPV6_ICMP, AH, ESP, GRE, ANY. Default: ANY
   - port: (Optional) Single port number
   - from_port: (Optional) Start of port range. Used with to_port
   - to_port: (Optional) End of port range. Used with from_port
@@ -80,13 +90,23 @@ variable "ingress_rules_with_sg_ids" {
     to_port           = optional(number)
     security_group_id = string
   }))
-  default     = []
+  default = []
+  validation {
+    condition = alltrue([
+      for rule in var.ingress_rules_with_sg_ids : (
+        rule.port == null
+        ? ((rule.from_port == null && rule.to_port == null) || (rule.from_port != null && rule.to_port != null && try(rule.from_port <= rule.to_port, false)))
+        : rule.from_port == null && rule.to_port == null
+      ) && contains(["ANY", "TCP", "UDP", "ICMP", "IPV6_ICMP", "AH", "ESP", "GRE"], rule.protocol)
+    ])
+    error_message = "Each ingress security-group rule must use either port or a complete, ordered from_port/to_port range, and its protocol must be ANY, TCP, UDP, ICMP, IPV6_ICMP, AH, ESP, or GRE."
+  }
   description = <<-EOT
   List of ingress rules with other security groups as sources.
   
   Each rule can include:
   - description: (Optional) Description of the rule
-  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, ANY. Default: ANY
+  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, IPV6_ICMP, AH, ESP, GRE, ANY. Default: ANY
   - port: (Optional) Single port number
   - from_port: (Optional) Start of port range. Used with to_port
   - to_port: (Optional) End of port range. Used with from_port
@@ -152,13 +172,23 @@ variable "egress_rules" {
     to_port        = optional(number, 65535)
     v4_cidr_blocks = optional(list(string), ["0.0.0.0/0"])
   }))
-  default     = []
+  default = []
+  validation {
+    condition = alltrue([
+      for rule in var.egress_rules : (
+        rule.port == null
+        ? ((rule.from_port == null && rule.to_port == null) || (rule.from_port != null && rule.to_port != null && try(rule.from_port <= rule.to_port, false)))
+        : rule.from_port == 0 && rule.to_port == 65535
+      ) && contains(["ANY", "TCP", "UDP", "ICMP", "IPV6_ICMP", "AH", "ESP", "GRE"], rule.protocol)
+    ])
+    error_message = "Each egress rule must use either port or a complete, ordered from_port/to_port range; port cannot be combined with a custom range. Its protocol must be ANY, TCP, UDP, ICMP, IPV6_ICMP, AH, ESP, or GRE."
+  }
   description = <<-EOT
   List of egress rules with CIDR blocks as destinations.
   
   Each rule can include:
   - description: (Optional) Description of the rule
-  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, ANY. Default: ANY
+  - protocol: (Optional) Protocol. Allowed values: TCP, UDP, ICMP, IPV6_ICMP, AH, ESP, GRE, ANY. Default: ANY
   - port: (Optional) Single port number
   - from_port: (Optional) Start of port range. Default: 0
   - to_port: (Optional) End of port range. Default: 65535
